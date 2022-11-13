@@ -1,9 +1,12 @@
 Data Researcher Home Assignment:
+
 How to run:
+
 python identify_sensitive_value_types.py -file file_path [-v]
 example:  python identify_sensitive_value_types.py -file financials.csv 
 
 return: Sensitive value types found in the csv file
+
 
 Answers to questions:
 1) What problems did you encounter when working with the data, if any?
