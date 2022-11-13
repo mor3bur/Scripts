@@ -74,6 +74,7 @@ def convert_to_df(file):
     """
     financials_df = pd.read_csv(file, engine='python', index_col=False)
     med_ids, cc_nums, issuers, phone_nums = [], [], [], []
+    found_cc, found_mbi, found_phone = "",  "", ""
     for index, row in financials_df.iterrows():
         cc_number, issuer = check_credit_card_num(row['cc_num'])
         p_num = check_phone_num(row['phone_num'])
@@ -81,10 +82,15 @@ def convert_to_df(file):
         cc_nums.append(cc_number)
         issuers.append(issuer)
         phone_nums.append(p_num)
+        if cc_number: found_cc = "Credit Cards, "
+        if check_MBI(row['medicare_id']): found_mbi = "Medicare Beneficiary Identifiers, "
+        if p_num: found_phone = "Phone Numbers"
     financials_df['medicare_id'] = med_ids
     financials_df['cc_num'] = cc_nums
     financials_df['issuer'] = issuers
     financials_df['phone_num'] = phone_nums
+
+    print(f"Found the following sensitive value types: {found_cc}{found_mbi}{found_phone}")
     return financials_df
 
 
@@ -92,8 +98,7 @@ if __name__ == '__main__':
     inputs = get_input()
     file_path = str(inputs.file)
     verbose = inputs.verbose
-
     financials_df = convert_to_df(file_path)
 
-    if verbose: print(financials_df)
+    if verbose: print(f"Found {financials_df.shape[0]} records in the given csv")
     financials_df.to_csv('arranged_financial_data.csv', index=False)
