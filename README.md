@@ -1,5 +1,5 @@
 Data Researcher Home Assignment:
-
+How to run:
 python identify_sensitive_value_types.py -file file_path [-v]
 example:  python identify_sensitive_value_types.py -file financials.csv 
 
